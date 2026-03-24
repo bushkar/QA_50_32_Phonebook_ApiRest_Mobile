@@ -1,0 +1,13 @@
+package mobile_tests;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import screens.SplashScreen;
+
+public class SplashScreenTests extends TestBase {
+    @Test
+    public void splashScreenPositiveTest() {
+        Assert.assertTrue(new SplashScreen(driver)
+                .validateVersionApp("Version 1.0.0", 10));
+    }
+}

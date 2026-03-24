@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static manager.AppManager.logger;
 import static utils.ContactFactory.positiveContact;
 
 public class ContactDataProvider {
@@ -87,7 +86,6 @@ public class ContactDataProvider {
                 line = bufferedReader.readLine();
             }
         } catch (IOException e) {
-            logger.info(e.getMessage());
             e.printStackTrace();
             throw new RuntimeException("IO exception");
         }
