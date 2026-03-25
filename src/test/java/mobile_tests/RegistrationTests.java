@@ -1,5 +1,6 @@
 package mobile_tests;
 
+import data_providers.UserDataProvider;
 import dto.User;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -8,6 +9,8 @@ import screens.ContactListScreen;
 import screens.ErrorScreen;
 import screens.LoginRegistrationScreen;
 import screens.SplashScreen;
+
+import java.lang.reflect.Method;
 
 import static utils.UserFactory.positiveUser;
 
@@ -37,5 +40,25 @@ public class RegistrationTests extends TestBase {
         loginRegistrationScreen.clickBtnRegistration();
         Assert.assertTrue(new ErrorScreen(driver)
                 .validateTextInError("username=must not be blank", 5));
+    }
+
+    @Test(dataProvider = "dataProviderFromFile_WrongUsername",
+            dataProviderClass = UserDataProvider.class)
+    public void registrationNegative_WrongUsername_Test(Method method, User user) {
+        loginRegistrationScreen.typeLoginRegistrationForm(user);
+        loginRegistrationScreen.clickBtnRegistration();
+        Assert.assertTrue(new ErrorScreen(driver)
+                .validateTextInError("username=must be a well-formed email address", 5));
+    }
+
+    @Test(dataProvider = "dataProviderFromFile_WrongPassword",
+            dataProviderClass = UserDataProvider.class)
+    public void registrationNegative_WrongPassword_Test(Method method, User user) {
+        loginRegistrationScreen.typeLoginRegistrationForm(user);
+        loginRegistrationScreen.clickBtnRegistration();
+        Assert.assertTrue(new ErrorScreen(driver)
+                .validateTextInError("{password= At least 8 characters;"
+                        + " Must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number;"
+                        + " Can contain special characters [@$#^&*!]}", 5));
     }
 }

@@ -11,9 +11,14 @@ public class ContactListScreen extends BaseScreen {
 
     @AndroidFindBy(id = "com.sheygam.contactapp:id/emptyTxt")
     WebElement noContacts;
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text='Contact list']")
+    WebElement contactList;
 
     public boolean validateTextContactListScreenAfterRegistration(String text, int time) {
         return isTextInElementPresent(noContacts, text, time);
     }
 
+    public boolean isThisContactList() {
+        return contactList.getText().equals("Contact list");
+    }
 }
