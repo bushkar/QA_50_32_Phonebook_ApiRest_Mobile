@@ -5,18 +5,18 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import screens.ContactListScreen;
+import screens.ErrorScreen;
 import screens.LoginRegistrationScreen;
 import screens.SplashScreen;
 
 import static utils.PropertiesReader.getProperty;
-import static utils.UserFactory.positiveUser;
 
 public class LoginTests extends TestBase {
     LoginRegistrationScreen loginRegistrationScreen;
 
     @BeforeMethod
     public void openAuthScreen() {
-        new SplashScreen(driver);
+//        new SplashScreen(driver);
         loginRegistrationScreen = new LoginRegistrationScreen(driver);
     }
 
@@ -26,6 +26,32 @@ public class LoginTests extends TestBase {
                 getProperty("base.properties", "password"));
         loginRegistrationScreen.typeLoginRegistrationForm(user);
         loginRegistrationScreen.clickBtnLogin();
-        Assert.assertTrue(new ContactListScreen(driver).isThisContactList());
+//        Assert.assertTrue(new ContactListScreen(driver).isThisContactList());
+        Assert.assertTrue(new ContactListScreen(driver).isBtnPlusPresent());
+    }
+
+    @Test
+    public void loginNegative_EmptyUser_Test() {
+        User user = new User("", getProperty("base.properties", "password"));
+        loginRegistrationScreen.typeLoginRegistrationForm(user);
+        loginRegistrationScreen.clickBtnLogin();
+        Assert.assertTrue(new ErrorScreen(driver)
+                .validateTextInError("Login or Password incorrect", 5));
+    }
+
+    @Test
+    public void loginNegative_EmptyFields_Test() {
+        loginRegistrationScreen.clickBtnLogin();
+        Assert.assertTrue(new ErrorScreen(driver)
+                .validateTextInError("Login or Password incorrect", 5));
+    }
+
+    @Test
+    public void loginNegative_WrongEmail_WithSpace_Test() {
+        User user = new User(" ", getProperty("base.properties", "password"));
+        loginRegistrationScreen.typeLoginRegistrationForm(user);
+        loginRegistrationScreen.clickBtnLogin();
+        Assert.assertTrue(new ErrorScreen(driver)
+                .validateTextInError("Login or Password incorrect", 5));
     }
 }

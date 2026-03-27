@@ -12,6 +12,7 @@ import screens.SplashScreen;
 
 import java.lang.reflect.Method;
 
+import static utils.PropertiesReader.getProperty;
 import static utils.UserFactory.positiveUser;
 
 public class RegistrationTests extends TestBase {
@@ -60,5 +61,33 @@ public class RegistrationTests extends TestBase {
                 .validateTextInError("{password= At least 8 characters;"
                         + " Must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number;"
                         + " Can contain special characters [@$#^&*!]}", 5));
+    }
+
+    @Test
+    public void registrationNegative_WithSpaceEmail_Test() {
+        User user = positiveUser();
+        user.setUsername(" ");
+        loginRegistrationScreen.typeLoginRegistrationForm(user);
+        loginRegistrationScreen.clickBtnRegistration();
+        Assert.assertTrue(new ErrorScreen(driver)
+                .validateTextInCrashScreen("Open app again", 5));
+    }
+
+    @Test
+    public void registrationNegative_EmptyFields_Test() {
+        User user = new User("", "");
+        loginRegistrationScreen.typeLoginRegistrationForm(user);
+        loginRegistrationScreen.clickBtnRegistration();
+        Assert.assertTrue(new ErrorScreen(driver).isAppStopDisplay());
+    }
+
+    @Test
+    public void registrationNegative_AlreadyExistUser_Test() {
+        User user = new User(getProperty("base.properties", "login"),
+                getProperty("base.properties", "password"));
+        loginRegistrationScreen.typeLoginRegistrationForm(user);
+        loginRegistrationScreen.clickBtnRegistration();
+        Assert.assertTrue(new ErrorScreen(driver)
+                .validateTextInError("User already exists", 5));
     }
 }

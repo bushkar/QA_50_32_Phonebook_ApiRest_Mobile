@@ -17,7 +17,7 @@ public class TestBase {
 //    @Test
 //    public void start() {}
 
-    @AfterMethod
+    @AfterMethod(enabled = false)
     public void tearDown() {
         if (driver != null)
             driver.quit();

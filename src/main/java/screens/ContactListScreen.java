@@ -13,6 +13,10 @@ public class ContactListScreen extends BaseScreen {
     WebElement noContacts;
     @AndroidFindBy(xpath = "//android.widget.TextView[@text='Contact list']")
     WebElement contactList;
+    @AndroidFindBy(accessibility = "add")
+    WebElement btnPlus;
+    @AndroidFindBy(xpath = "//android.widget.Toast[@text='Contact was added!']")
+    WebElement messageContactWasAdded;
 
     public boolean validateTextContactListScreenAfterRegistration(String text, int time) {
         return isTextInElementPresent(noContacts, text, time);
@@ -20,5 +24,17 @@ public class ContactListScreen extends BaseScreen {
 
     public boolean isThisContactList() {
         return contactList.getText().equals("Contact list");
+    }
+
+    public boolean isBtnPlusPresent() {
+        return isElementPresent(btnPlus, 5);
+    }
+
+    public void clickBtnPlus() {
+        btnPlus.click();
+    }
+
+    public boolean isTextInMessageContactWasAddedPresent(String text, int time) {
+        return isTextInElementPresent(messageContactWasAdded, text, time);
     }
 }
