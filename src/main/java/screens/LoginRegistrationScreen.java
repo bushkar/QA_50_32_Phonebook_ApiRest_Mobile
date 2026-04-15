@@ -31,4 +31,8 @@ public class LoginRegistrationScreen extends BaseScreen {
     public void clickBtnLogin() {
         btnLogin.click();
     }
+
+    public boolean isBtnRegistrationPresent() {
+        return isElementPresent(btnRegistration, 5);
+    }
 }

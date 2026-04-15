@@ -30,6 +30,12 @@ public class ContactListScreen extends BaseScreen implements SwipeUtils {
     List<WebElement> contactListScreen;
     @AndroidFindBy(xpath = "//android.widget.Toast[@text='Contact was updated!']")
     WebElement messageContactWasUpdated;
+    @AndroidFindBy(id = "android:id/button2")
+    WebElement btnCansel;
+    @AndroidFindBy(xpath = "//android.widget.ImageView[@content-desc='More options']")
+    WebElement btnMore;
+    @AndroidFindBy(xpath = "//android.widget.TextView[@resource-id='com.sheygam.contactapp:id/title' and @text='Logout']")
+    WebElement btnLogout;
 
     public boolean validateTextContactListScreenAfterRegistration(String text, int time) {
         return isTextInElementPresent(noContacts, text, time);
@@ -73,5 +79,21 @@ public class ContactListScreen extends BaseScreen implements SwipeUtils {
         new WebDriverWait(driver, Duration.ofSeconds(2))
                 .until(ExpectedConditions.visibilityOf(btnPlus));
         swipeInsideElement(driver, contactListScreen.get(0), Direction.LEFT);
+    }
+
+    public void clickFirstContact() {
+        contactListScreen.get(0).click();
+    }
+
+    public void deleteFirstContactCancel() {
+        new WebDriverWait(driver, Duration.ofSeconds(2))
+                .until(ExpectedConditions.visibilityOf(btnPlus));
+        swipeInsideElement(driver, contactListScreen.get(0), Direction.RIGHT);
+        btnCansel.click();
+    }
+
+    public void logout() {
+        btnMore.click();
+        btnLogout.click();
     }
 }

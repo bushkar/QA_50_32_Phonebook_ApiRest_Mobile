@@ -10,7 +10,6 @@ import manager.ContactController;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import screens.AddNewContactScreen;
 import screens.ContactListScreen;
 import screens.LoginRegistrationScreen;
 import utils.BaseApi;
@@ -61,11 +60,21 @@ public class DeleteContactTests extends TestBase {
     public void deleteFirstContactPositiveTest() {
         int sizeBeforeDelete = contactsDtoBeforeDelete.getContacts().size();
         contactListScreen.deleteFirstContact();
-        ;
         int sizeAfterDelete = ContactController
                 .requestGetAllUserContacts(tokenDto.getToken())
                 .as(ContactsDto.class).getContacts().size();
         System.out.println(sizeBeforeDelete + " - " + sizeAfterDelete);
         Assert.assertEquals(sizeAfterDelete, sizeBeforeDelete - 1);
+    }
+
+    @Test
+    public void deleteFirstContactNegativeTest() {
+        int sizeBeforeDelete = contactsDtoBeforeDelete.getContacts().size();
+        contactListScreen.deleteFirstContactCancel();
+        int sizeAfterDelete = ContactController
+                .requestGetAllUserContacts(tokenDto.getToken())
+                .as(ContactsDto.class).getContacts().size();
+        System.out.println(sizeBeforeDelete + " - " + sizeAfterDelete);
+        Assert.assertEquals(sizeAfterDelete, sizeBeforeDelete);
     }
 }
